@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
+    'rest_framework',
     'django_elasticsearch_dsl',
 ]
 LOCAL_APPS = [

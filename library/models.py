@@ -3,9 +3,22 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Author(models.Model):
-    first_name = models.CharField(_("First name"), max_length=200)
-    last_name = models.CharField(_("Last name"), max_length=200)
-    author_name = models.CharField(_("Author name"), max_length=200)
+    first_name = models.CharField(
+        verbose_name=_("First name"),
+        max_length=200,
+        help_text=_("Author First Name")
+    )
+    last_name = models.CharField(
+        verbose_name=_("Last name"),
+        max_length=200,
+        help_text=_("Author Last Name")
+    )
+    author_name = models.CharField(
+        verbose_name=_("Author name"),
+        max_length=200,
+        help_text=_("Author Name"),
+        unique=True,
+    )
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -18,22 +31,40 @@ class Author(models.Model):
     class Meta:
         verbose_name = _("Author")
         verbose_name_plural = _("Authors")
-        ordering = ("author_name",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.author_name
 
 
 class Book(models.Model):
-    title = models.CharField(_("Title"), max_length=200)
-    authors = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-    publishing_date = models.DateField(_("Publishing date"), blank=True, null=True)
-    isbn = models.CharField(_("ISBN"), blank=True, max_length=20)
+    title = models.CharField(
+        verbose_name=_("Title"),
+        help_text=_("Title of the Book"),
+        max_length=200
+    )
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.CASCADE,
+        related_name='books',
+        help_text=_("related author")
+    )
+    publishing_date = models.DateTimeField(
+        verbose_name=_("Publishing datetime"),
+        help_text=_("Publishing datetime"),
+        blank=True,
+        null=True
+    )
+    isbn = models.CharField(
+        verbose_name=_("ISBN"),
+        blank=True,
+        max_length=20
+    )
 
     class Meta:
         verbose_name = _("Book")
         verbose_name_plural = _("Books")
-        ordering = ("title",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.title
