@@ -6,6 +6,8 @@ from library.models import Author, Book
 
 @registry.register_document
 class AuthorDocument(Document):
+    pk = fields.IntegerField()
+
     class Index:
         # Name of the Elasticsearch index
         name = 'authors'
@@ -37,15 +39,16 @@ class AuthorDocument(Document):
 
 
 @registry.register_document
-class AuthorDocument(Document):
-    authors = fields.NestedField(properties={
-        'first_name': fields.TextField(),
-        'last_name': fields.TextField(),
-        'author_name': fields.TextField(),
-        'email': fields.TextField(),
+class BookDocument(Document):
+    author = fields.ObjectField(properties={
         'pk': fields.IntegerField(),
-    }, include_in_root=True)
+        'first_name': fields.KeywordField(),
+        'last_name': fields.KeywordField(),
+        'author_name': fields.KeywordField(),
+        'email': fields.TextField(),
+    })
 
+    pk = fields.IntegerField()
     isbn = fields.KeywordField()
 
     class Index:
